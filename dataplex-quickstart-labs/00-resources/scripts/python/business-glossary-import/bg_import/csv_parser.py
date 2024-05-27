@@ -71,9 +71,8 @@ def parse_glossary_csv(
   tracked_terms = set()
   try:
     with open(path) as csv_file:
-      csv_reader = csv.reader(
-          csv_file, delimiter=",", quotechar='"', skipinitialspace=True
-      )
+      csv_reader = csv.DictReader(csv_file)
+
       for line_idx, record in enumerate(csv_reader):
         if not record:
           continue
@@ -189,7 +188,7 @@ def parse_term(
         errors.append(err)
       continue
 
-    value, attr_errors = parse_fn(record[i])  # pylint:disable=not-callable
+    value, attr_errors = parse_fn(record[attr_name])  # pylint:disable=not-callable
     attributes.append(value)
     for err in attr_errors:
       err.line = line_idx + 1

@@ -43,8 +43,8 @@ class Error(abc.ABC):
     self.operation = None
     self.record = record
 
-  def __repr__(self) -> str:
-    return self.to_string()
+  # def __repr__(self) -> str:
+  #   return self.to_string()
 
   def to_string(self) -> str:
     """Generates a string containing details on the error."""

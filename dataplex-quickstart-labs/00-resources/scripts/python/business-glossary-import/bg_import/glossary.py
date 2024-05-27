@@ -327,6 +327,9 @@ class Glossary:
     # payload
     if relationship_type == RelationshipType.DESCRIBED and source_column:
       request_body['source_column'] = source_column
+      print(f"endpoint: {endpoint}")
+      print(f"dest_entry_name: {dest_entry_name}")
+      print(f"request_body: {request_body}")
 
     ret = api_call_utils.fetch_api_response(
         requests.post,
@@ -367,7 +370,7 @@ class Glossary:
     if not related_terms:
       return successful_relations, errors
 
-    logger.info(f'Adding {relationship_type.value} relations between terms...')
+    logger.info(f'Adding {relationship_type.value} relations between terms : {related_terms}')
     tasks = [(src, dst, relationship_type,) for src, dst in related_terms]
 
     ret = Glossary._parallelize(self._create_relationship, tasks)
@@ -450,6 +453,9 @@ class Glossary:
           # once.
           tagged_asset_relations.add((src, term.display_name))
 
+    print("related_term_relations: ", related_term_relations)
+    print("tagged_asset_relations: ", tagged_asset_relations)
+
     tasks = [
         (synonym_relations, RelationshipType.SYNONYMOUS),
         (related_term_relations, RelationshipType.RELATED),
@@ -463,6 +469,7 @@ class Glossary:
       imported_relations.extend(created_relationships)
       term_import_errors.extend(errors)
 
+    print(f"imported_relations: {imported_relations}")
     return (
         list(self._term_cache.values()),
         imported_relations,

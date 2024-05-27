@@ -118,4 +118,4 @@ def configure_argument_parser(parser: argparse.ArgumentParser) -> None:
 
 def display_parsing_errors(errors: list[error.ParseError]) -> None:
   for err in errors:
-    logger.error(err.to_string())
+    logger.error(err)

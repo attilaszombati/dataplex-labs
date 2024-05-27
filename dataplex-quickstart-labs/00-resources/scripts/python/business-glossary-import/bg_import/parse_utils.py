@@ -56,19 +56,14 @@ def parse_data_stewards(s: str) -> _ParseResult[list[str]]:
 
 
 def parse_data_steward(s: str) -> str | None:
-  """Parses a single data steward.
+  email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
-  Data stewards follows the pattern "Name <email>", where the name is optional.
-  Args:
-    s: Raw text containing a possible data steward.
+  match = re.match(email_pattern, s)
 
-  Returns:
-    DataSteward | None.
-  """
-  match = re.fullmatch(r"\s*(?P<name>.*)<(?P<email>.+)>\s*", s)
-  if not match:
+  if match is None:
     return None
-  return match[0]
+
+  return match.group(0)
 
 
 def parse_list(entities: str) -> _ParseResult[list[str]]:
